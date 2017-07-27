@@ -15,3 +15,7 @@ List of companies with self-driving cars
 Lectures
 1. http://selfdrivingcars.mit.edu
 
+Self - Driving Car Playgrounds
+1. http://selfdrivingcars.mit.edu/deeptrafficjs/
+2. Leaderboard winners and their techniques http://selfdrivingcars.mit.edu/leaderboard-1-0/
+
