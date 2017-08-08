@@ -9,6 +9,7 @@ List of companies with self-driving cars
 5. Nextenv
 6. Drive.ai
 7. Voyage - https://www.linkedin.com/company-beta/18078448/
+8. Cruise Automation
 
 
 
