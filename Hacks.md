@@ -1,2 +1,2 @@
 
-If jupyter notebook has issues, install anaconda again. this should fix references.
+1. If jupyter notebook has issues, install anaconda again. this should fix references.
