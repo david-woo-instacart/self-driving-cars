@@ -2,16 +2,18 @@
 Repository to store all self-driving-cars files and knowledge
 
 List of companies with self-driving cars
-1. Waymo
-2. Faraday
-3. Nuro
-4. Zoox 
-5. Nextenv
-6. Drive.ai
-7. Voyage - https://www.linkedin.com/company-beta/18078448/
-8. Cruise Automation
+1. Cruise Automation
+2. Drive.ai
+3. Waymo
+4. Faraday
+5. Nuro
+6. Zoox 
+7. Nextenv
+8. Voyage - https://www.linkedin.com/company-beta/18078448/
+9. Aurora
 
-
+List of DMV engagement reports
+1. https://www.dmv.ca.gov/portal/dmv/detail/vr/autonomous/disengagement_report_2016
 
 Lectures
 1. http://selfdrivingcars.mit.edu
