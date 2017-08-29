@@ -29,4 +29,5 @@ LIDAR, radar, and cameras Datasets
 
 Motivational End Products
 1. https://www.youtube.com/watch?v=HJ58dbd5g8g
+2. Data Viz for Autonomous vehicles - https://eng.uber.com/atg-dataviz/
 
