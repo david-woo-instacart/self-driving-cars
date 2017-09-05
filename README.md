@@ -34,3 +34,6 @@ Motivational End Products
 Cool Features For Cars
 1. Difficulty Parking or where to park https://research.googleblog.com/2017/02/using-machine-learning-to-predict.html
 
+Cool repos to look at
+1. https://github.com/facebookresearch
+
