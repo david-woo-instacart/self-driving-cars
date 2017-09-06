@@ -11,6 +11,7 @@ List of companies with self-driving cars
 7. Nextenv
 8. Voyage - https://www.linkedin.com/company-beta/18078448/
 9. Aurora
+10. AutoX - https://www.autox.ai/ . Methodology: Use camera images only. no Lidar. Scalable and inexpensive. Similar to how we use our sense of sight.
 
 List of DMV engagement reports
 1. https://www.dmv.ca.gov/portal/dmv/detail/vr/autonomous/disengagement_report_2016
