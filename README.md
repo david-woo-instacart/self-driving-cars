@@ -27,6 +27,9 @@ Self - Driving Car Playgrounds
 LIDAR, radar, and cameras Datasets
 1. KITTI Vision Benchmark Suite http://www.cvlibs.net/datasets/kitti/raw_data.php
 2. Urban scape data set https://www.cityscapes-dataset.com/
+3. http://robotcar-dataset.robots.ox.ac.uk/datasets/
+4. http://data.selfracingcars.com/
+5. http://research.comma.ai/
 
 Motivational End Products
 1. https://www.youtube.com/watch?v=HJ58dbd5g8g
