@@ -1,0 +1,2 @@
+v1 - Naive model based on height. raw data and run naive version of ransac.
+v1 - Run ransac to filter for inliers as ground plane
