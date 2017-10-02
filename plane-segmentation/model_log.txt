@@ -1,2 +1,17 @@
 v1 - Naive model based on height. raw data and run naive version of ransac.
-v1 - Run ransac to filter for inliers as ground plane
+v2 - Run ransac to filter for inliers as ground plane
+
+Point_Cloud_Camera_Projection_v2 - rewriting 
+
+Submissions.
+
+
+2. DONE - Draw the pointcloud data projected on the camera image - Point_Cloud_Camera_Projection_v4 - also applied heat map
+3. a)  Annotate the 3D box around car visible in pointcloud 
+3. b) DONE - Draw the projected box on the camera image (File :Point_Cloud_Camera_Projection_v4)
+4. DONE - Implement a ground plane segmentation algorithm on pointcloud data - kitti-dataset-Plane-segment-v2
+
+
+For submissions:
+KITTI_Dataset_3d_Image_Projection_Ground_Plane_Segmentation_V1 - i) 3d to camera ii) added 3d bounding boxes
+KITTI_Dataset_3d_Image_Projection_Ground_Plane_Segmentation_V2 - i) 3d to camera ii) added 3d bounding boxes iii) add ground plane
