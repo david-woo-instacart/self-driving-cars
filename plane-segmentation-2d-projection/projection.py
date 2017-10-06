@@ -216,7 +216,7 @@ def crop_velo_to_img_size(img_shape, calib_velo_data,velo_data_raw,include_z = F
         
         distance = img_dim_z_pts[:,0]
         
-        print("using xaxis")xw
+        print("using xaxis")
         return (img_dim_x_pts, img_dim_y_pts,distance)
     
     return (img_dim_x_pts, img_dim_y_pts)
