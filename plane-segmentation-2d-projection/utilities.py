@@ -1,8 +1,103 @@
-### Submission #3 This is start of ground plane segmentation
+# Extract all libraries needed here
+import numpy as np
+import pykitti
+import matplotlib.pyplot as plt
+
+from source import parseTrackletXML as xmlParser
+from source import dataset_utility as du
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-import numpy as np
+
+def load_dataset(basedir,date, drive, calibrated=False, frame_range=None):
+    """
+    Loads the dataset with `date` and `drive`.
+    
+    Parameters
+    ----------
+    date        : Dataset creation date.
+    drive       : Dataset drive.
+    calibrated  : Flag indicating if we need to parse calibration data. Defaults to `False`.
+    frame_range : Range of frames. Defaults to `None`.
+
+    Returns
+    -------
+    Loaded dataset of type `raw`.
+    """
+    dataset = pykitti.raw(basedir, date, drive)
+
+    # Load the data
+    if calibrated:
+        dataset._load_calib()  # Calibration data are accessible as named tuples
+
+    np.set_printoptions(precision=4, suppress=True)
+    print('\nDrive: ' + str(dataset.drive))
+    print('\nFrame range: ' + str(dataset.frames))
+
+    if calibrated:
+        print('\nIMU-to-Velodyne transformation:\n' + str(dataset.calib.T_velo_imu))
+        print('\nGray stereo pair baseline [m]: ' + str(dataset.calib.b_gray))
+        print('\nRGB stereo pair baseline [m]: ' + str(dataset.calib.b_rgb))
+
+    return dataset
+
+
+def load_tracklets_for_frames(n_frames, xml_path):
+    """
+    Loads dataset labels also referred to as tracklets, saving them individually for each frame.
+
+    Parameters
+    ----------
+    n_frames    : Number of frames in the dataset.
+    xml_path    : Path to the tracklets XML.
+
+    Returns
+    -------
+    Tuple of dictionaries with integer keys corresponding to absolute frame numbers and arrays as values. First array
+    contains coordinates of bounding box vertices for each object in the frame, and the second array contains objects
+    types as strings.
+    """
+    #print(xml_path)
+    tracklets = xmlParser.parseXML(xml_path)
+
+    frame_tracklets = {}
+    frame_tracklets_types = {}
+    for i in range(n_frames):
+        frame_tracklets[i] = []
+        frame_tracklets_types[i] = []
+
+    # loop over tracklets
+    for i, tracklet in enumerate(tracklets):
+        # this part is inspired by kitti object development kit matlab code: computeBox3D
+        h, w, l = tracklet.size
+        # in velodyne coordinates around zero point and without orientation yet
+        trackletBox = np.array([
+            [-l / 2, -l / 2, l / 2, l / 2, -l / 2, -l / 2, l / 2, l / 2],
+            [w / 2, -w / 2, -w / 2, w / 2, w / 2, -w / 2, -w / 2, w / 2],
+            [0.0, 0.0, 0.0, 0.0, h, h, h, h]
+        ])
+        
+        print(tracklets)
+        # loop over all data in tracklet
+        for translation, rotation, state, occlusion, truncation, amtOcclusion, amtBorders, absoluteFrameNumber in tracklet:
+            # determine if object is in the image; otherwise continue
+            if truncation not in (xmlParser.TRUNC_IN_IMAGE, xmlParser.TRUNC_TRUNCATED):
+                continue
+            # re-create 3D bounding box in velodyne coordinate system
+            yaw = rotation[2]  # other rotations are supposedly 0
+            assert np.abs(rotation[:2]).sum() == 0, 'object rotations other than yaw given!'
+            rotMat = np.array([
+                [np.cos(yaw), -np.sin(yaw), 0.0],
+                [np.sin(yaw), np.cos(yaw), 0.0],
+                [0.0, 0.0, 1.0]
+            ])
+            cornerPosInVelo = np.dot(rotMat, trackletBox) + np.tile(translation, (8, 1)).T
+            frame_tracklets[absoluteFrameNumber] = frame_tracklets[absoluteFrameNumber] + [cornerPosInVelo]
+            frame_tracklets_types[absoluteFrameNumber] = frame_tracklets_types[absoluteFrameNumber] + [
+                tracklet.objectType]
+
+    return (frame_tracklets, frame_tracklets_types)
+
 
 colors = {
     'Car': 'b',
@@ -125,15 +220,16 @@ def display_frame_statistics(dataset, tracklet_rects, tracklet_types, frame, poi
         axes=[1, 2] # Y and Z axes
     )
     plt.show()
-    
-def draw_point_cloud_seg(velo_frame_input,ax, title, axes=[0, 1, 2], xlim3d=None, ylim3d=None, zlim3d=None):
+
+def draw_point_cloud_seg(velo_frame_input,tracklet_rects, tracklet_types,frame,ax, title, axes=[0, 1, 2], xlim3d=None, ylim3d=None, zlim3d=None):
     """
     Convenient method for drawing various point cloud projections as a part of frame statistics.
     """
     
     point_size = 10
-    
-    ax.scatter(np.transpose(velo_frame_input[:, axes]), s=point_size, c=velo_frame_input[:, 3], cmap='terrain')
+    velo_frame_input
+    print(point_size)
+    ax.scatter(*np.transpose(velo_frame_input[:, axes]), s=point_size, c=velo_frame_input[:, 3], cmap='terrain')
     ax.set_title(title)
     ax.set_xlabel('{} axis'.format(axes_str[axes[0]]))
     ax.set_ylabel('{} axis'.format(axes_str[axes[1]]))
@@ -156,3 +252,4 @@ def draw_point_cloud_seg(velo_frame_input,ax, title, axes=[0, 1, 2], xlim3d=None
 
     for t_rects, t_type in zip(tracklet_rects[frame], tracklet_types[frame]):
         draw_box(ax, t_rects, axes=axes, color=colors[t_type])
+

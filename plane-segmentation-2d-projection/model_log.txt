@@ -1,1 +1,0 @@
-v4 - implement orientation constraint for ransac algorithm

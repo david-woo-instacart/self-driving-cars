@@ -1,6 +1,15 @@
 # Logic to convert velodyne coordinates to pixel coordinates
 
 import numpy as np
+import cv2 as cv2
+import statistics
+import sys
+import numpy as np
+import pykitti
+import matplotlib.pyplot as plt
+
+from source import parseTrackletXML as xmlParser
+from source import dataset_utility as du
 
 #### Helper function ####
 
@@ -99,6 +108,50 @@ def loadCalibrationRigid(filename, verbose=False):
       print('Tr', velo_dict['Tr'])
     return velo_dict['Tr']
 
+def get_rigid_body_transformation(calib_file):
+    
+    #step 1: Getting rigid body transformation seems easy
+    T_cam_velo = loadCalibrationRigid(calib_file)
+    
+    return T_cam_velo
+
+def convert_to_rgb(minval, maxval, val, colors):
+    
+    fi = float(val-minval) / float(maxval-minval) * (len(colors)-1)
+    i = int(fi)
+    f = fi - i
+
+    (r1, g1, b1), (r2, g2, b2) = colors[1], colors[2]
+    return int(r1 + f*(r2-r1)), int(g1 + f*(g2-g1)), int(b1 + f*(b2-b1))
+
+velodyne_max_x=100  # this scales the x-axis values. maybe replace with range
+
+# Overlay velodyne points over image
+def overlay_velo_img(img, velo_data,radius = 2):
+    (x, y,z) = velo_data
+    im = np.zeros(img.shape, dtype=np.float32)
+    x_axis = np.floor(x).astype(np.int32)
+    y_axis = np.floor(y).astype(np.int32)
+    z_axis = np.floor(z).astype(np.int32)
+
+    # below draws circles on the image
+    for i in range(0, len(x)):
+
+        if z_axis[i] <= 0:
+            color = int(1/velodyne_max_x * 256)
+            value = 0
+        else:
+            color = int((z_axis[i])/velodyne_max_x * 256)
+            value = z_axis[i] * 4
+        colors_range = [(0, 0, 255), (0, 255, 0), (255, 0, 0)]  # [BLUE, GREEN, RED]
+        r, g, b  = convert_to_rgb(0,256,value,colors_range) 
+        
+        cv2.circle(img, (x_axis[i], y_axis[i]), radius, [r, g, b],-1)
+
+    fig1 = plt.figure(figsize=(20, 20))
+    
+    return img
+
 #### Main functions to perform the projection ####
 
 def project(p_in, T):
@@ -131,92 +184,60 @@ def project(p_in, T):
     p_out = p2_out[:, 0: dim_norm-1]/denominator
     return p_out
 
-
 #main 3d points to camera projection function
-
-l_and = lambda *x: np.logical_and.reduce(x)
-
-def convert_velo_cord_to_img(data_set, calib_dir,num_points = 5, cam=2, frame=0,tracklet = False):
-    """
-    Demostrates projection of the velodyne points into the image plane
-    Parameters
-    ----------
-    dataset = data_set_velo
-    base_dir  : Absolute path to sequence base directory (ends with _sync)
-    calib_dir : Absolute path to directory that contains calibration files
-    Returns
-    -------
-    """
+def convert_velo_cord_to_img_cord_test(velo_data,calib_dir,cam = 2,tracklet = False):
+    
+    #step 1: velo to camera coordinates Getting rigid body transformation seems easy
+    T_cam_velo = get_rigid_body_transformation(calib_dir + 'calib_velo_to_cam.txt' )
+    
+    #step 2: camera coordinate to image coordinate. projection
     calib = loadCalibrationCamToCam(calib_dir + 'calib_cam_to_cam.txt')
-    Tr_velo_to_cam = loadCalibrationRigid(calib_dir + 'calib_velo_to_cam.txt')
 
-    # Method
-    # velodyne to camera coordiates through rigid body transformation (Tr)
-    # camera coordinates to image coordinates through projection (P_rect)
-    # image coordinates to pixel coordinates through rectification (R_rect)  
     R_cam_to_rect = np.eye(4, dtype=float)
     R_cam_to_rect[0: 3, 0: 3] = calib['R_rect_00']
-    P_velo_to_img = np.dot(np.dot(calib['P_rect_0' + str(cam)], R_cam_to_rect), Tr_velo_to_cam)
-
-    if tracklet: 
-        velo_data = data_set
-        velo = velo_data
-    else:
-        velo_data = data_set[frame]
-        velo = velo_data[0:velo_data.shape[0]:num_points]
     
-    #img_h, img_w, img_ch = dataset_rgb[frame].right.shape
-    img_h, img_w, img_ch = 400,1500,3
-    
-    img_plane_depth = 5
-    x_dir_pts = velo[:, 0]
-    filtered_x_dir_indices = l_and((x_dir_pts > img_plane_depth))
-#     .flatten to remove extra dimension
-    indices = np.argwhere(filtered_x_dir_indices).flatten()
-#     Depth (x) limited velodyne points
-    velo = velo[indices, :]
-    # Finally, Apply 2d projection function to velodyne points
-    velo_img = project(velo[:, 0:3], P_velo_to_img)
+    #step 3: Create matrix to do RBT, projection, rectification
+    transform_matrix = np.dot(np.dot(calib['P_rect_0' + str(cam)],R_cam_to_rect),T_cam_velo)
     
     if tracklet:
-        return velo_img
+        return project(velo_data,transform_matrix)
     else:
-        return velo_img,velo
+        return project(velo_data,transform_matrix),velo_data
     
 
 #main 3d points to camera projection function
 
-def crop_velo_to_img_size(img_shape, calib_velo_data,velo_data_raw,include_z = False):
+intersect = lambda *x: np.logical_and.reduce(x)
+def crop_to_img_size(img_size,projected_data,original_data):
+
     """
     Parameters:
     ----------
     img_size: camera image size
-    velo_data :calibrated and project transformed lidar to camera data
+    projected_data : transformed lidar to camera data
+    original_data : raw velodyne data
+    original_data : include depth metrics in lidar ( x-coordinates in velodyne)
+    
+    Output:
+    cropped_x_points
+    cropped_y_points
+    depth_points
     """
-    img_h = img_shape[0]
-    img_w = img_shape[1]
-    print("crop_velo velo_data %",calib_velo_data[:,0])
-    img_dim_x_pts = calib_velo_data[:, 0]
-    img_dim_y_pts = calib_velo_data[:, 1]
-        
-    x_filt = l_and((img_dim_x_pts < img_w), (img_dim_x_pts >= 0))
-    y_filt = l_and((img_dim_y_pts < img_h), (img_dim_y_pts >= 0))
-    filtered = l_and(x_filt, y_filt)
-    indices = np.argwhere(filtered).flatten()
     
-    img_dim_x_pts = img_dim_x_pts[indices]
-    img_dim_y_pts = img_dim_y_pts[indices]
+    img_h = img_size[0]
+    img_w = img_size[1]
     
-    if include_z:
-        img_dim_z_pts = velo_data_raw
-        
-        print("indices %",indices.shape)
-        
-        img_dim_z_pts = img_dim_z_pts[indices]
-        
-        distance = img_dim_z_pts[:,0]
-        
-        print("using xaxis")
-        return (img_dim_x_pts, img_dim_y_pts,distance)
+    # step 1: get indexes coordinates are outside of camera image size. i.e more than the length of the camera image
+    filter_x = intersect((projected_data[:,0]<img_w),(projected_data[:,0]>=0))
+    filter_y = intersect((projected_data[:,1]<img_h),(projected_data[:,1]>=0))
+    comb_filter = intersect(filter_x,filter_y)
     
-    return (img_dim_x_pts, img_dim_y_pts)
+    #find indices where both x and y are within image size
+    indices = np.argwhere(comb_filter).flatten()
+    
+    img_dim_x_pts = projected_data[:,0][indices]
+    img_dim_y_pts = projected_data[:,1][indices]
+    
+    img_dim_dept_pts = original_data[:,0][indices]
+    
+    return (img_dim_x_pts, img_dim_y_pts,img_dim_dept_pts)
