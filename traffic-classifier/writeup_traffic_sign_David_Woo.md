@@ -19,12 +19,12 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./images/exploratory.jpg "Visualization"
-[image2]: ./images/blue_down_sign.jpg "Traffic Sign 1"
-[image3]: ./images/construction.jpg "Traffic Sign 2"
-[image4]: ./images/german_stop_sign.jpg "Traffic Sign 3"
-[image5]: ./images/road_slippery.jpg "Traffic Sign 4"
-[image6]: ./images/traffic_sign.jpg "Traffic Sign 5"
+[image1]: ./images/german_signs/exploratory.jpg "Visualization"
+[image2]: ./images/german_signs/blue_down_sign.jpg "Traffic Sign 1"
+[image3]: ./images/german_signs/construction.jpg "Traffic Sign 2"
+[image4]: ./images/german_signs/german_stop_sign.jpg "Traffic Sign 3"
+[image5]: ./images/german_signs/road_slippery.jpg "Traffic Sign 4"
+[image6]: ./images/german_signs/traffic_sign.jpg "Traffic Sign 5"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -50,7 +50,7 @@ Number of classes = 43
 
 ####2. Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set. It is a bar chart that shows the number of types of signs that are present in the training set. x-axis corresponds to the sign id and y-axis number of samples.
 
 ![alt text][image1]
 
