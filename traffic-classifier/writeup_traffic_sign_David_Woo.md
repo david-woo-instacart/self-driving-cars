@@ -1,4 +1,4 @@
-#**Traffic Sign Recognition** 
+#**Traffic Sign Recognition**
 
 ##Writeup Template
 
@@ -19,14 +19,12 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/visualization.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+[image1]: ./images/exploratory.jpg "Visualization"
+[image2]: ./images/blue_down_sign.jpg "Traffic Sign 1"
+[image3]: ./images/construction.jpg "Traffic Sign 2"
+[image4]: ./images/german_stop_sign.jpg "Traffic Sign 3"
+[image5]: ./images/road_slippery.jpg "Traffic Sign 4"
+[image6]: ./images/traffic_sign.jpg "Traffic Sign 5"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -36,7 +34,7 @@ The goals / steps of this project are the following:
 
 ####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+You're reading it! and here is a link to my [project code](https://github.com/david-woo-instacart/self-driving-cars/blob/master/traffic-classifier/Traffic_Sign_Classifier-v2.ipynb)
 
 ###Data Set Summary & Exploration
 
@@ -68,9 +66,9 @@ I tried converting from RGB to greyscale but did not help the model, accuracy de
 
 My final model consisted of the following layers:
 
-| Layer         		|     Description	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
+| Layer         		|     Description	        					|
+|:---------------------:|:---------------------------------------------:|
+| Input         		| 32x32x3 RGB image   							|
 | Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x16 	|
 | Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x48 	|
 | Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x96 	|
@@ -85,7 +83,7 @@ My final model consisted of the following layers:
 | Fully connected		| Softmax activation       						|
 |						|												|
 |						|												|
- 
+
 
 
 ####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
@@ -102,16 +100,16 @@ Hyper parameters : 1) learning rate = 0.01. Choose a small learning rate to incr
 
 My final model results were:
 * training set accuracy of 0.968
-* validation set accuracy of 0.9238 
+* validation set accuracy of 0.9238
 * test set accuracy of 0.92
 
 If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen? 
+* What was the first architecture that was tried and why was it chosen?
 My first architecture was:
 
-| Layer         		|     Description	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
+| Layer         		|     Description	        					|
+|:---------------------:|:---------------------------------------------:|
+| Input         		| 32x32x3 RGB image   							|
 | Flatten				|												|
 | Fully connected		| Relu activation        						|
 | Fully connected		| Sigmoid activation       						|
@@ -133,7 +131,7 @@ If a well known architecture was chosen:
 * What architecture was chosen?
 * Why did you believe it would be relevant to the traffic sign application?
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
- 
+
 
 ###Test a Model on New Images
 
@@ -141,8 +139,8 @@ If a well known architecture was chosen:
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![alt text][image2] ![alt text][image3] ![alt text][image4]
+![alt text][image5] ![alt text][image6]
 
 The first image might be difficult to classify because ...
 
@@ -150,9 +148,9 @@ The first image might be difficult to classify because ...
 
 Here are the results of the prediction:
 
-| Image			        |     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| Turn right ahead      | Speed Limit   									| 
+| Image			        |     Prediction	        					|
+|:---------------------:|:---------------------------------------------:|
+| Turn right ahead      | Speed Limit   									|
 | roadwork     			| Roadwork 										|
 | Stop					| Slippery Road											|
 | Slippery road	      	| Beware of Snow and Ice					 				|
@@ -167,8 +165,8 @@ The code for making predictions on my final model is located in the 62th cell of
 
 For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
+| Probability         	|     Prediction	        					|
+|:---------------------:|:---------------------------------------------:|
 | 0.98         		| Priority Road      					    		|
 | 0.00625166  	    | No Entry              							|
 | 0.00269564  	    | Turn left ahead       							|
@@ -176,9 +174,7 @@ For the first image, the model is relatively sure that this is a stop sign (prob
 | 0.00090599  	    | Roundabout mandatory							|
 
 
-For the second image ... 
+For the second image ...
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 ####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
-
-
