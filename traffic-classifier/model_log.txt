@@ -1,0 +1,4 @@
+v1 - no cnn. 1 layer neural network. test accuracy = 0.977
+v1 - cnn + 1 layer neural network + sigmoid test accuracy = 0.98. so better. ok for now. go with this submission
+v1 - cnn + 1 layer neural network + softmax test accuracy = 0.97776. so better. ok for now. go with this submission
+v1 - cnn + 1 layer neural network + softmax + sgd optimizer. test accuracy = 0.97771xs. so better. ok for now. go with this submission
