@@ -25,9 +25,9 @@ The goals / steps of this project are the following:
 [image4]: ./images/german_signs/german_stop_sign.jpg "Traffic Sign 3"
 [image5]: ./images/german_signs/road_slippery.jpg "Traffic Sign 4"
 [image6]: ./images/german_signs/traffic_sign.jpg "Traffic Sign 5"
-[image7]: ./images/german_signs/classes_histogram.jpg "classes_histogram"
-[image8]: ./images/german_signs/data_processing.jpg "data_processing"
-[image9]: ./images/german_signs/confusion_matrix.jpg "confusion_matrix"
+[image7]: ./images/german_signs/classes_histogram.png "classes_histogram"
+[image8]: ./images/german_signs/data_processing.png "data_processing"
+[image9]: ./images/german_signs/confusion_matrix.png "confusion_matrix"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
