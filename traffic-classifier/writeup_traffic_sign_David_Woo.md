@@ -29,7 +29,7 @@ The goals / steps of this project are the following:
 [image8]: ./images/german_signs/data_processing.png "data_processing"
 [image9]: ./images/german_signs/confusion_matrix.png "confusion_matrix"
 [image10]: ./images/german_signs/new_traffic_signs.png "new traffic signs"
-[image11]: ./images/german_signs/new_images_and_class_probabilitiess.png "new traffic signs and predicted classes"
+[image11]: ./images/german_signs/new_images_and_class_probabilities.png "new traffic signs and predicted classes"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
