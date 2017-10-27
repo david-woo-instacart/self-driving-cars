@@ -28,6 +28,8 @@ The goals / steps of this project are the following:
 [image7]: ./images/german_signs/classes_histogram.png "classes_histogram"
 [image8]: ./images/german_signs/data_processing.png "data_processing"
 [image9]: ./images/german_signs/confusion_matrix.png "confusion_matrix"
+[image10]: ./images/german_signs/new_traffic_signs.png "new traffic signs"
+[image11]: ./images/german_signs/new_images_and_class_probabilities.png "new traffic signs and predicted classes"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -130,13 +132,6 @@ I added a convolutional network. My intuition is that with images this will keep
 
 Also for the output layer instead of sigmoid I replaced it with softmax. sigmoid seems to be better for multi-label problems since the probability of each classes will be computed independently (i.e an increase in probability in one class does not decrease the probabillity in another class). However, since we are doing a multi-class classification a softmax seemed more appropiate. Since a increase in probability in one class would decrease probability in another class.
 
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
-
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
 
 
 ###Test a Model on New Images
@@ -145,42 +140,19 @@ If a well known architecture was chosen:
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image2] ![alt text][image3] ![alt text][image4]
-![alt text][image5] ![alt text][image6]
+![alt text][image10]
 
-The first image might be difficult to classify because ...
+As you can see the images, some of the images have objects in the background. This may make it harder for the model to classify as it won't be able to differentiate between foreground and background objects.
 
 ####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-Here are the results of the prediction:
-
-| Image			        |     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| Turn right ahead      | Speed Limit   									|
-| roadwork     			| Roadwork 										|
-| Stop					| Slippery Road											|
-| Slippery road	      	| Beware of Snow and Ice					 				|
-| Traffic signals		| Priority Road      							|
-
-
-The model was able to correctly guess 1 of the 5 traffic signs, which gives an accuracy of 20%. This seems low compared to the test set from the model. A possible explanation is the way I crop and resize the images or possibly i should distort the images that were used to train the model so that it can generalize more.
+The model was able to correctly guess 1 of the 5 traffic signs, which gives an accuracy of 20%, compared to the test set of 96% This seems low compared to the test set from the model. A possible explanation is the way I crop and resize the images or possibly i should distort the images that were used to train the model so that it can generalize more. Also, i noticed that the new traffic signs i introduced also have objects in the background. The model may not be able to differentiate the foreground (sign) and background
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 62th cell of the Ipython notebook.
+Below is a visualization of the top 5 softmax probabilities. The model seems to be biased towards no passing signs. This could be because this is a common occuring sign and the model may be defaulting to classifying as no passing.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
-
-| Probability         	|     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| 0.98         		| Priority Road      					    		|
-| 0.00625166  	    | No Entry              							|
-| 0.00269564  	    | Turn left ahead       							|
-| 0.00106316  	    | Go straight or right   							|
-| 0.00090599  	    | Roundabout mandatory							|
-
-
-For the second image ...
+[alt text][image11]
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 ####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
