@@ -1,1 +1,8 @@
+# Directories to ignore
 
+Debug
+
+
+# Files to ignore
+
+*.pyc
