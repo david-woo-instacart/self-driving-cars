@@ -50,7 +50,7 @@ signs data set:
 
 Number of training examples = 34799
 Number of testing examples = 12630
-Image data shape = (32, 32)
+Image data shape = (32, 32, 3)
 Number of classes = 43
 
 ####2. Include an exploratory visualization of the dataset.
@@ -66,9 +66,9 @@ Here is an exploratory visualization of the data set. It is a bar chart that sho
 ####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
 For image data, I did a few preprocssing steps
-a) Used limited adaptive histogram equalization. This normalized the intensity or constrast across the image
-b) Converted to greyscalce
-c) Augmented image : rotate, scale, translate
+a) Used limited adaptive histogram equalization. This normalized the intensity or contrast across the image
+b) Converted to greyscale. With greyscale we might get better signal to noise ratio, for example the neural net can better detect curvatures and lines and less about the color differences.
+c) Augmented image : rotate, scale, translate. This will help the model generalize when pictures are taken at different angles
 ![alt text][image8]
 
 ####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
