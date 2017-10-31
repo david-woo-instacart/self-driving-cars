@@ -4,5 +4,8 @@ Debug
 
 
 # Files to ignore
-
+*.cproject
+*.project
+*.settings
 *.pyc
+*.project
